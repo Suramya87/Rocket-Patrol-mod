@@ -8,6 +8,9 @@ class Menu extends Phaser.Scene {
         this.load.image('spaceship', './assets/spaceship.png')
         this.load.image('starfield', './assets/sky.png')
         this.load.image('starfield2', './assets/sky2.png')
+        this.load.image('blue_star', './assets/blue star layer.png')
+        this.load.image('purple_star', './assets/purple star layer.png')
+        this.load.image('bg', './assets/bg layer.png')
         this.load.image('speed', './assets/speed.png')
 
         // load audio

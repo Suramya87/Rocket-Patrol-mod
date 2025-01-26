@@ -50,11 +50,15 @@ class Play extends Phaser.Scene {
 
         // 60-second play clock
         scoreConfig.fixedWidth = 0
+
+        this.timeText = this.add.text(16, 16, `Time Left: ${Math.ceil(game.settings.gameTimer / 1000)}`, scoreConfig).setOrigin(0);
+
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5)
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu', scoreConfig).setOrigin(0.5)
             this.gameOver = true
         }, null, this)
+
     }
     update() {
           // check key input for restart
@@ -88,7 +92,10 @@ class Play extends Phaser.Scene {
           this.p1Rocket.reset()
           this.shipExplode(this.ship04)
       }
-        if(!this.gameOver) {               
+        if(!this.gameOver) {        
+            const remainingTime = Math.max(0, Math.ceil((this.clock.getRemaining() / 1000))); // Get remaining time in seconds
+            this.timeText.setText(`Time Left: ${remainingTime}`); // Update the text     
+
             this.p1Rocket.update()         // update rocket sprite
             this.ship01.update()           // update spaceships (x3)
             this.ship02.update()
@@ -138,7 +145,9 @@ class Play2 extends Phaser.Scene {
   }
   create() {
       // green UI background
-      this.starfield = this.add.tileSprite(0, 0, 1280, 720, 'starfield2').setOrigin(0, 0)
+      this.bg = this.add.tileSprite(0, 0, 1280, 720, 'bg').setOrigin(0, 0)
+      this.purple_star = this.add.tileSprite(0, 0, 1280, 720, 'purple_star').setOrigin(0, 0)
+      this.blue_star = this.add.tileSprite(0, 0, 1280, 720, 'blue_star').setOrigin(0, 0)
 
       this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0, 0)
       // white borders
@@ -184,6 +193,9 @@ class Play2 extends Phaser.Scene {
 
       // 60-second play clock
       scoreConfig.fixedWidth = 0
+
+      this.timeText = this.add.text(16, 16, `Time Left: ${Math.ceil(game.settings.gameTimer / 1000)}`, scoreConfig).setOrigin(0);
+
       this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
           this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5)
           this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu', scoreConfig).setOrigin(0.5)
@@ -196,7 +208,9 @@ class Play2 extends Phaser.Scene {
           this.scene.restart()
       }
       // this.p1Rocket.update()
-      this.starfield.tilePositionX -= 4
+      this.bg.tilePositionX -= 2
+      this.purple_star.tilePositionX -= 1.1
+      this.blue_star.tilePositionX -= 3
 
       this.p1Rocket.update()
 
@@ -222,7 +236,9 @@ class Play2 extends Phaser.Scene {
         this.p1Rocket.reset()
         this.shipExplode(this.ship04)
     }
-      if(!this.gameOver) {               
+      if(!this.gameOver) {          
+          const remainingTime = Math.max(0, Math.ceil((this.clock.getRemaining() / 1000))); // Get remaining time in seconds
+          this.timeText.setText(`Time Left: ${remainingTime}`); // Update the text       
           this.p1Rocket.update()         // update rocket sprite
           this.ship01.update()           // update spaceships (x3)
           this.ship02.update()
