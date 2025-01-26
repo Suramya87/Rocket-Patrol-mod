@@ -19,7 +19,7 @@ class Play extends Phaser.Scene {
         this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0,0)
         this.ship03 = new Spaceship(this, game.config.width, borderUISize*6 + borderPadding*4, 'spaceship', 0, 10).setOrigin(0,0)
         // speedy ships
-        this.ship04 = new Speeeeed(this, game.config.width + borderUISize*1, borderUISize * 3 + borderPadding*2, 'speed', 0, 100).setOrigin(1,0)
+        this.ship04 = new Speed(this, game.config.width + borderUISize*1, borderUISize * 3 + borderPadding*2, 'speed', 0, 100).setOrigin(1,0)
 
         // define keys
         keyFIRE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
@@ -150,8 +150,8 @@ class Play extends Phaser.Scene {
         this.scoreLeft.text = this.p1Score;
     
         // Play random explosion sound
-        const randomIndex = Phaser.Math.Between(1, 4); // Random number between 1 and 4
-        this.sound.play(`sfx-explosion${randomIndex}`); // Play sound, e.g., 'sfx-explosion1', 'sfx-explosion2', etc.
+        const randomIndex = Phaser.Math.Between(1, 4); 
+        this.sound.play(`sfx-explosion${randomIndex}`); 
     }
     
 }
@@ -183,7 +183,7 @@ class Play2 extends Phaser.Scene {
       this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0,0)
       this.ship03 = new Spaceship(this, game.config.width, borderUISize*6 + borderPadding*4, 'spaceship', 0, 10).setOrigin(0,0)
       // speedy ships
-      this.ship04 = new Speed(this, game.config.width + borderUISize*7, borderUISize * 3 + borderPadding*2, 'speed', 0, 100).setOrigin(1,0)
+      this.ship04 = new Speeeeed(this, game.config.width + borderUISize* 3, borderUISize * 3 + borderPadding*(Phaser.Math.Between(1, 7)), 'speed', 0, 100).setOrigin(1,0)
 
       // define keys
       keyFIRE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
@@ -298,20 +298,26 @@ class Play2 extends Phaser.Scene {
       }
     }
     shipExplode(ship) {
-      // temporarily hide ship
-      ship.alpha = 0                         
-      // create explosion sprite at ship's position
-      let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0)
-      boom.anims.play('explode')           // play explode animation
-      boom.on('animationcomplete', () => { // callback after ani completes
-        ship.reset()                       // reset ship position
-        ship.alpha = 1                     // make ship visible again
-        boom.destroy()                     // remove explosion sprite
-      })
-      // score add and text update
-      this.p1Score += ship.points
-      this.scoreLeft.text = this.p1Score
-      this.sound.play('sfx-explosion')       
-    }
+      // Temporarily hide ship
+      ship.alpha = 0;
+  
+      // Create explosion sprite at ship's position
+      let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
+      boom.anims.play('explode'); // Play explode animation
+      boom.on('animationcomplete', () => { // Callback after animation completes
+          ship.reset(); // Reset ship position
+          ship.y = Phaser.Math.Between(borderUISize * 3, game.config.height - borderUISize * 4); // Randomize y position
+          ship.alpha = 1; // Make ship visible again
+          boom.destroy(); // Remove explosion sprite
+      });
+  
+      // Score add and text update
+      this.p1Score += ship.points;
+      this.scoreLeft.text = this.p1Score;
+  
+      // Play random explosion sound
+      const randomIndex = Phaser.Math.Between(1, 4); 
+      this.sound.play(`sfx-explosion${randomIndex}`); 
+  }
 }
 

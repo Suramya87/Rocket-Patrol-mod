@@ -7,7 +7,6 @@
 // 3-Point Tier
 // Create 4 new explosion sound effects and randomize which one plays on impact (3)
 // Display the time remaining (in seconds) on the screen (3)
-// Using a texture atlas, create a new animated sprite (three frames minimum) for the enemy spaceships (3)
 // Implement parallax scrolling for the background (3)
 // 5-Point Tier
 // Create a new enemy Spaceship type (w/ new artwork) that's smaller, moves faster, and is worth more points (5)
