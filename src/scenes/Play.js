@@ -149,7 +149,7 @@ class Play2 extends Phaser.Scene {
       this.purple_star = this.add.tileSprite(0, 0, 1280, 720, 'purple_star').setOrigin(0, 0)
       this.blue_star = this.add.tileSprite(0, 0, 1280, 720, 'blue_star').setOrigin(0, 0)
 
-      this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0, 0)
+      this.green_bar = this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0, 0)
       // white borders
       this.add.rectangle(0, 0, game.config.width, borderUISize, 0x000000).setOrigin(0, 0)
       this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0x000000).setOrigin(0, 0)
@@ -201,6 +201,14 @@ class Play2 extends Phaser.Scene {
           this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu', scoreConfig).setOrigin(0.5)
           this.gameOver = true
       }, null, this)
+      
+      // adding or removing time pain 
+      this.changed_time = (sometime) => {
+        const current_time = this.clock.getRemaining(); 
+        const newTime = Math.max(0, current_time + sometime); 
+
+        this.clock.reset({ delay: newTime, callback: this.clock.callback, callbackScope: this.clock.callbackScope }); 
+      };
   }
   update() {
         // check key input for restart
@@ -223,18 +231,26 @@ class Play2 extends Phaser.Scene {
       if(this.checkCollision(this.p1Rocket, this.ship03)) {
           this.p1Rocket.reset()
           this.shipExplode(this.ship03)   
+          this.changed_time(2000)
       }
       if (this.checkCollision(this.p1Rocket, this.ship02)) {
           this.p1Rocket.reset()
           this.shipExplode(this.ship02)
+          this.changed_time(2000)
       }
       if (this.checkCollision(this.p1Rocket, this.ship01)) {
           this.p1Rocket.reset()
           this.shipExplode(this.ship01)
+          this.changed_time(2000)
       }
       if (this.checkCollision(this.p1Rocket, this.ship04)) {
         this.p1Rocket.reset()
         this.shipExplode(this.ship04)
+        this.changed_time(2000)
+    }
+      if (this.p1Rocket.y <= borderUISize * 3 + borderPadding + 5) { // Rocket reached the top without hitting a ship
+        this.changed_time(-10000); // Subtract 1 second
+        this.p1Rocket.reset();    // Reset rocket after miss
     }
       if(!this.gameOver) {          
           const remainingTime = Math.max(0, Math.ceil((this.clock.getRemaining() / 1000))); // Get remaining time in seconds
@@ -248,6 +264,7 @@ class Play2 extends Phaser.Scene {
       if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
           this.scene.start("menuScene")
         }
+      console.log(borderUISize * 3 + borderPadding + 5)
   }
   checkCollision(rocket, ship) {
       // simple AABB checking
