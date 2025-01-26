@@ -46,7 +46,7 @@ class Speeeeed extends Phaser.GameObjects.Sprite {
     }
 
     update() {
-        this.x -= this.moveSpeed * 100
+        this.x -= this.moveSpeed * 8
         if(this.x <= 0 - this.width) {
             this.x = game.config.width
         }
