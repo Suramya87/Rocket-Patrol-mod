@@ -4,7 +4,7 @@ class Play extends Phaser.Scene {
     }
     create() {
         // green UI background
-        this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0)
+        this.starfield = this.add.tileSprite(0, 0, 1280, 720, 'starfield').setOrigin(0, 0)
 
         this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0, 0)
         // white borders
@@ -18,6 +18,9 @@ class Play extends Phaser.Scene {
         this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4, 'spaceship', 0, 30).setOrigin(0, 0)
         this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0,0)
         this.ship03 = new Spaceship(this, game.config.width, borderUISize*6 + borderPadding*4, 'spaceship', 0, 10).setOrigin(0,0)
+        // speedy ships
+        this.ship04 = new Speeeeed(this, game.config.width + borderUISize*7, borderUISize * 3 + borderPadding*2, 'speed', 0, 100).setOrigin(1,0)
+
         // define keys
         keyFIRE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
         keyRESET = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R)
@@ -66,6 +69,7 @@ class Play extends Phaser.Scene {
         this.ship01.update()               // update spaceships (x3)
         this.ship02.update()
         this.ship03.update()
+        this.ship04.update()
 
         // check collisions
         if(this.checkCollision(this.p1Rocket, this.ship03)) {
@@ -80,11 +84,16 @@ class Play extends Phaser.Scene {
             this.p1Rocket.reset()
             this.shipExplode(this.ship01)
         }
+        if (this.checkCollision(this.p1Rocket, this.ship04)) {
+          this.p1Rocket.reset()
+          this.shipExplode(this.ship04)
+      }
         if(!this.gameOver) {               
             this.p1Rocket.update()         // update rocket sprite
             this.ship01.update()           // update spaceships (x3)
             this.ship02.update()
             this.ship03.update()
+            this.ship04.update()
         } 
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             this.scene.start("menuScene")
