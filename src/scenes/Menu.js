@@ -7,6 +7,7 @@ class Menu extends Phaser.Scene {
         this.load.image('rocket', './assets/rocket.png')
         this.load.image('spaceship', './assets/spaceship.png')
         this.load.image('starfield', './assets/sky.png')
+        this.load.image('starfield2', './assets/sky2.png')
         this.load.image('speed', './assets/speed.png')
 
         // load audio
@@ -76,7 +77,7 @@ class Menu extends Phaser.Scene {
             gameTimer: 45000    
           }
           this.sound.play('sfx-select')
-          this.scene.start('playScene')    
+          this.scene.start('playScene2')    
         }
       }
 }
